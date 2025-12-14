@@ -93,16 +93,7 @@ Recommended for quick calculations without a web server.
 ```bash
 python main_agent.py
 ```
-Open your browser at http://localhost:5001.
-
-Features: Input forms, history tables, bilingual support (EN/ZH).
-
-Option B: Command Line Agent (Quick Test) Recommended for quick calculations without a web server.
-
-Bash
-
-python main_agent.py
-Follow the text prompts to input parameters like average_water_temp, weight, etc.
+  * Follow the text prompts to input parameters like average_water_temp, weight, etc.
 
 -----
 
