@@ -1,0 +1,10 @@
+opencv-python
+pyserial
+sounddevice
+scipy
+numpy
+pynput
+openai
+requests
+pydub
+aiohttp
