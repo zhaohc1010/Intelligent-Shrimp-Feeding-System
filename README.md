@@ -63,9 +63,7 @@ This component acts as the intelligent core of the system, processing data to ma
     ```bash
     python app.py
     ```
-    Access the dashboard at `http://localhost:5001`.
-
-*For detailed setup instructions, including API configuration and CLI usage, please refer to the [feeding\_agent\_webapp/README.md](https://www.google.com/search?q=feeding_agent_webapp/README.md).*
+  
 
 -----
 
@@ -95,7 +93,6 @@ This component translates digital decisions into physical actions, providing a t
     ```
     Follow the on-screen instructions to interact via voice or keyboard commands.
 
-*For detailed hardware requirements and connection guides, please refer to the [intelligent\_feeding\_tray/README.md](https://www.google.com/search?q=intelligent_feeding_tray/README.md).*
 
 -----
 
@@ -122,6 +119,4 @@ If you use this code or system in your research, please cite our paper:
 }
 ```
 
-## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
