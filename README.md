@@ -45,15 +45,22 @@ Intelligent-Shrimp-Feeding-System/
 
 This subsystem acts as the intelligent core. It processes water quality data and shrimp biometrics to make expert-level feeding decisions.
 
-### 📋 Prerequisites
+### 🌐 Live Demo (Try it now!)
+You can experience the **Web Interface** immediately without installation via our cloud deployment:
+👉 **[Click here to open the Smart Feeding Agent](https://feeding-agent-webapp.onrender.com)**
 
-  * **LightGBM Model**: Ensure `best_lightgbm_model_ALLD4.joblib` is in the `feeding_agent_webapp/` directory.
-  * **Knowledge Base**: Ensure `Feeding rules.docx` is in the `feeding_agent_webapp/` directory.
+> *Note: The demo is deployed on a free instance (Render.com). It may take approx. 50 seconds to spin up if it has been inactive.*
+
+---
+
+### 📋 Prerequisites (For Local Installation)
+If you prefer to run the system locally or modify the code:
+* **LightGBM Model**: Ensure `best_lightgbm_model_ALLD4.joblib` is in the `feeding_agent_webapp/` directory.
+* **Knowledge Base**: Ensure `Feeding rules.docx` is in the `feeding_agent_webapp/` directory.
 
 ### ⚙️ Setup & Configuration
 
 1.  **Install Dependencies**:
-
     ```bash
     cd feeding_agent_webapp
     pip install -r requirements.txt
@@ -61,21 +68,18 @@ This subsystem acts as the intelligent core. It processes water quality data and
 
 2.  **Configure API Keys (`config.py`)**:
     Open `feeding_agent_webapp/config.py` and strictly follow these steps:
-
-      * **LLM API**: You must set your DashScope (or OpenAI-compatible) API key.
-          * *Action*: Set the environment variable `DASHSCOPE_API_KEY` on your system, OR modify `core_logic.py` to accept the key directly (not recommended for public repos).
-      * **Paths**: Ensure `BASE_DIR` paths match your local file structure.
+    * **LLM API**: You must set your DashScope (or OpenAI-compatible) API key.
+        * *Action*: Set the environment variable `DASHSCOPE_API_KEY` on your system, OR modify `core_logic.py` to accept the key directly (not recommended for public repos).
+    * **Paths**: Ensure `BASE_DIR` paths match your local file structure.
 
 3.  **Configure Firebase (Optional for Web App)**:
     If you want to use the cloud history feature in the Web App:
+    * *Action*: Place your Firebase credentials JSON content into an environment variable named `FIREBASE_CREDENTIALS_JSON`, or modify `app.py` to load from a local file.
 
-      * *Action*: Place your Firebase credentials JSON content into an environment variable named `FIREBASE_CREDENTIALS_JSON`, or modify `app.py` to load from a local file.
-
-### 🖥️ How to Run
+### 🖥️ How to Run Locally
 
 **Option A: Web Interface (Visual Dashboard)**
 Recommended for visualization and history management.
-
 ```bash
 python app.py
 ```
@@ -89,8 +93,16 @@ Recommended for quick calculations without a web server.
 ```bash
 python main_agent.py
 ```
+Open your browser at http://localhost:5001.
 
-  * Follow the text prompts to input parameters like `average_water_temp`, `weight`, etc.
+Features: Input forms, history tables, bilingual support (EN/ZH).
+
+Option B: Command Line Agent (Quick Test) Recommended for quick calculations without a web server.
+
+Bash
+
+python main_agent.py
+Follow the text prompts to input parameters like average_water_temp, weight, etc.
 
 -----
 
@@ -167,16 +179,10 @@ Hold the **[Spacebar]** to speak. The system supports fuzzy matching for the fol
 
 If you use this code or system in your research, please cite our paper:
 
-```bibtex
-@article{YourName2025SmartFeeding,
-  title={Intelligent Shrimp Feeding System: A Multimodal AI Approach to Precision Aquaculture},
-  author={Your Name and Co-authors},
-  journal={Journal Name / Conference},
-  year={2025}
-}
-```
-
-
-
 ```
 ```
+
+## 📬 Support and Contact
+zhaohc@qdio.ac.cn
+
+
