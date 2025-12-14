@@ -1,110 +1,167 @@
+
 # 🦐 Intelligent Shrimp Feeding System: A Multimodal AI Approach to Precision Aquaculture 🌊
+
+[![Python](https://img.shields.io/badge/python-3.9+-yellow.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+## 📖 Introduction
 
 **Intelligent Shrimp Feeding System** is a pioneering, closed-loop solution for precision aquaculture that integrates advanced Artificial Intelligence (AI) with industrial hardware control. Designed to optimize shrimp farming efficiency, this system bridges the gap between digital decision-making and physical execution.
 
+This repository houses the official source code for the research paper: ****.
 
-## 🌟 Project Overview
+### System Architecture
+The project is divided into two core subsystems working in tandem:
 
-Traditional shrimp farming often relies on manual observation and fixed feeding schedules, leading to inefficiencies and potential health risks for the livestock. Our system revolutionizes this by combining two powerful subsystems:
+1.  **🧠 The Brain (`feeding_agent_webapp`)**: A decision-support software that uses **LightGBM**, **Formulas**, and **LLMs** to calculate the optimal feeding amount.
+2.  **🦾 The Body (`intelligent_feeding_tray`)**: A hardware control interface that uses **Computer Vision** and **Voice Interaction** to physically manage the feeding tray.
 
-1.  **🧠 The Brain (`feeding_agent_webapp`)**: A sophisticated software decision-support system. It leverages a hybrid model combining LightGBM machine learning, biological formulas, and Large Language Models (LLMs) to calculate precise feeding amounts based on real-time data and expert knowledge.
-2.  **🦾 The Body (`intelligent_feeding_tray`)**: A robust hardware control interface. It utilizes Computer Vision (CV) and Voice Interaction to physically manage the feeding tray, enabling automated adjustments and visual health inspections of the shrimp.
+---
 
-## 📂 Repository Structure
-
-The project is organized into two primary directories, each dedicated to a specific component of the system:
+## 📂 Directory Structure
 
 ```text
 Intelligent-Shrimp-Feeding-System/
 │
-├── README.md                   # You are here! General project overview.
+├── feeding_agent_webapp/       # [Software] Decision Support System (Flask/LightGBM/LLM)
+│   ├── app.py                  # Web Server Entry Point
+│   ├── main_agent.py           # CLI Agent Entry Point
+│   ├── core_logic.py           # Core Algorithms
+│   ├── config.py               # API & Path Configuration
+│   └── ...
 │
-├── feeding_agent_webapp/       # 🧠 Software: Decision Support System
-│   ├── app.py                  # Flask web application entry point
-│   ├── core_logic.py           # Core algorithms (LightGBM, Formula, LLM)
-│   ├── main_agent.py           # CLI agent for terminal interaction
-│   ├── translations.py         # UI internationalization (English/Chinese)
-│   ├── config.py               # Configuration settings (API keys, paths)
-│   ├── requirements.txt        # Python dependencies for the webapp
-│   └── README.md               # Detailed documentation for the software component
+├── intelligent_feeding_tray/   # [Hardware] Physical Control Interface (Vision/Voice)
+│   ├── app.py                  # Hardware Control Loop
+│   ├── relay_motor_controller.py # Serial Driver for Relay
+│   ├── config.py               # API Configuration
+│   └── ...
 │
-└── intelligent_feeding_tray/   # 🦾 Hardware: Physical Control Interface
-    ├── app.py                  # Main control loop for Vision and Voice
-    ├── relay_motor_controller.py # Low-level driver for relay/motor control
-    ├── config.py               # Configuration for hardware API keys
-    ├── requirements.txt        # Python dependencies for the hardware
-    └── README.md               # Detailed documentation for the hardware component
-```
+└── requirements.txt            # (Optional) Global dependencies
+````
 
 -----
 
-## 🧠 Part 1: The Brain - Smart Feeding Decision Agent (`feeding_agent_webapp`)
+## 🚀 Part 1: The Brain (`feeding_agent_webapp`)
 
-This component acts as the intelligent core of the system, processing data to make expert-level feeding decisions.
+This subsystem acts as the intelligent core. It processes water quality data and shrimp biometrics to make expert-level feeding decisions.
 
-### ✨ Key Software Features
+### 📋 Prerequisites
 
-  * **Dual-Core Prediction Engine**: Simultaneously calculates feeding amounts using a pre-trained **LightGBM** machine learning model and standard biological **Formulas**, providing a robust baseline for decision-making.
-  * **AI-Powered "Chief Expert"**: Utilizes an **OpenAI/DashScope Large Language Model (LLM)** to analyze the outputs from both prediction models. It incorporates user remarks (e.g., "shrimp molting") and historical trends to refine the final feeding recommendation, mimicking human expert reasoning.
-  * **Multilingual Web Interface**: Features a user-friendly Web UI built with Flask, supporting both **English** and **Chinese** for broader accessibility.
-  * **Comprehensive Logging**: Supports data persistence via **Firebase Firestore** for cloud-based history management and local **Excel** logging for offline use.
+  * **LightGBM Model**: Ensure `best_lightgbm_model_ALLD4.joblib` is in the `feeding_agent_webapp/` directory.
+  * **Knowledge Base**: Ensure `Feeding rules.docx` is in the `feeding_agent_webapp/` directory.
 
-### 🚀 Quick Start (Software)
+### ⚙️ Setup & Configuration
 
-1.  **Navigate to the directory**:
+1.  **Install Dependencies**:
+
     ```bash
     cd feeding_agent_webapp
-    ```
-2.  **Install Dependencies**:
-    ```bash
     pip install -r requirements.txt
     ```
-3.  **Run the Web Interface**:
-    ```bash
-    python app.py
-    ```
-  
+
+2.  **Configure API Keys (`config.py`)**:
+    Open `feeding_agent_webapp/config.py` and strictly follow these steps:
+
+      * **LLM API**: You must set your DashScope (or OpenAI-compatible) API key.
+          * *Action*: Set the environment variable `DASHSCOPE_API_KEY` on your system, OR modify `core_logic.py` to accept the key directly (not recommended for public repos).
+      * **Paths**: Ensure `BASE_DIR` paths match your local file structure.
+
+3.  **Configure Firebase (Optional for Web App)**:
+    If you want to use the cloud history feature in the Web App:
+
+      * *Action*: Place your Firebase credentials JSON content into an environment variable named `FIREBASE_CREDENTIALS_JSON`, or modify `app.py` to load from a local file.
+
+### 🖥️ How to Run
+
+**Option A: Web Interface (Visual Dashboard)**
+Recommended for visualization and history management.
+
+```bash
+python app.py
+```
+
+  * Open your browser at `http://localhost:5001`.
+  * **Features**: Input forms, history tables, bilingual support (EN/ZH).
+
+**Option B: Command Line Agent (Quick Test)**
+Recommended for quick calculations without a web server.
+
+```bash
+python main_agent.py
+```
+
+  * Follow the text prompts to input parameters like `average_water_temp`, `weight`, etc.
 
 -----
 
-## 🦾 Part 2: The Body - Intelligent Feeding Tray (`intelligent_feeding_tray`)
+## 🦾 Part 2: The Body (`intelligent_feeding_tray`)
 
-This component translates digital decisions into physical actions, providing a tangible interface for farm management.
+This subsystem handles the physical execution. It listens to voice commands to control motors and uses a camera to inspect the tray.
 
-### ✨ Key Hardware Features
+### 🛠️ Hardware Requirements
 
-  * **Voice-Activated Control**: Parses natural language commands (e.g., "Lift tray", "Stop motor") using Automatic Speech Recognition (ASR) to control hardware relays, allowing for hands-free operation.
-  * **Computer Vision Integration**: Captures real-time video frames for visual analysis using Vision Language Models (VLM). This allows the system to visually inspect the tray and answer queries like "Is the tray empty?".
-  * **Industrial Hardware Control**: Includes a custom driver module for **LCUS USB Relays**, enabling precise control over DC motors for tray movement with built-in safety mechanisms to prevent overheating.
+  * **PC/Controller**: Windows (Recommended for COM port ease) or Linux.
+  * **USB Relay**: LCUS-1, LCUS-2, or LCUS-4 type (Serial communication).
+  * **Camera**: Standard USB Webcam.
+  * **Audio**: Microphone and Speaker.
 
-### 🚀 Quick Start (Hardware)
+### ⚙️ Setup & Configuration
 
-1.  **Navigate to the directory**:
+1.  **Install Dependencies**:
+
     ```bash
-    cd intelligent_feeding_tray
-    ```
-2.  **Install Dependencies**:
-    ```bash
+    cd ../intelligent_feeding_tray  # If you are in webapp folder
     pip install -r requirements.txt
     ```
-3.  **Run the Control System**:
-    ```bash
-    python app.py
-    ```
-    Follow the on-screen instructions to interact via voice or keyboard commands.
 
+    *Note: You must have [FFmpeg](https://ffmpeg.org/) installed on your system for audio processing.*
+
+2.  **Configure Hardware Port (`app.py`)**:
+
+      * *Action*: Check your Device Manager to find the COM port of your USB Relay (e.g., `COM3`, `/dev/ttyUSB0`).
+      * Open `app.py` (or `relay_motor_controller.py`) and update the initialization line:
+        ```python
+        motor_controller = RelayMotorController(port='COM3') # Change 'COM3' to your actual port
+        ```
+
+3.  **Configure AI Services (`config.py`)**:
+    Open `intelligent_feeding_tray/config.py` and fill in your API keys:
+
+    ```python
+    vision_model_config = {
+      "api_key": "YOUR_VOLCENGINE_API_KEY", # Replace this
+      "model_endpoint": "YOUR_ENDPOINT_ID"  # Replace this
+    }
+
+    asr_model_config = {
+      "app_key": "YOUR_APP_KEY",           # Replace this
+      "access_key": "YOUR_ACCESS_KEY"      # Replace this
+    }
+    ```
+
+### 🕹️ How to Run
+
+```bash
+python app.py
+```
+
+### 🗣️ Voice Commands Guide
+
+Hold the **[Spacebar]** to speak. The system supports fuzzy matching for the following commands (English/Chinese):
+
+| Command Intent | Keywords (English) | Keywords (Chinese) | Action |
+| :--- | :--- | :--- | :--- |
+| **Move Up** | `up`, `raise`, `lift` | 上升, 升高 | Motor rotates to lift tray ($t$ seconds). |
+| **Move Down** | `down`, `lower`, `drop` | 下降, 降低 | Motor rotates to lower tray ($t$ seconds). |
+| **Power On** | `power on`, `turn on` | 打开电源 | Engages main power relay. |
+| **Visual QA** | *(Any other query)* | *(任意询问)* | Captures photo & answers (e.g., "Is it empty?"). |
 
 -----
 
-## 🤝 Contributing
+## ⚠️ Important Notes for Reviewers/Users
 
-We welcome contributions to improve the Intelligent Shrimp Feeding System\! Please follow these steps:
-
-1.  Fork the repository.
-2.  Create a new branch (`git checkout -b feature/AmazingFeature`).
-3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4.  Push to the branch (`git push origin feature/AmazingFeature`).
-5.  Open a Pull Request.
+1.  **Simulation Mode**: If you do not have the specific USB Relay hardware connected, `intelligent_feeding_tray` will automatically enter **Simulation Mode**. You will see logs in the console instead of physical motor movements.
+2.  **API Keys**: The `config.py` files in this repository contain placeholders. You **must** replace them with valid API keys (Volcengine/DashScope) for the AI features to function.
 
 ## 📜 Citation
 
@@ -120,3 +177,6 @@ If you use this code or system in your research, please cite our paper:
 ```
 
 
+
+```
+```
